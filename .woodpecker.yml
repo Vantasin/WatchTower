@@ -32,7 +32,6 @@ steps:
       - envsubst < env.template > .env
       - chmod 600 .env
 
-
   restart-compose:
     image: docker:cli
     volumes:
