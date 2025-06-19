@@ -79,7 +79,6 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 
    ```bash
    docker compose up -d
-   docker compose ps
    ```
 
 ---
@@ -121,11 +120,20 @@ These variables enable **automated container updates** with optional **email not
 
 ## 🧪 Useful Commands
 
+Stop containers for a local Compose project
 ```bash
-# Stop the Watchtower service
 docker compose down
 ```
 
+Lists containers for a local Compose project
+```bash
+docker compose ps
+```
+
+Lists all running Docker containers
+```bash
+docker ps
+```
 ---
 
 ## 🧷 ZFS Snapshot (optional)
