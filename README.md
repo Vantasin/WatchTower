@@ -134,6 +134,7 @@ Lists all running Docker containers:
 ```bash
 docker ps
 ```
+
 ---
 
 ## 🚀 Continuous Deployment with Woodpecker
@@ -150,7 +151,7 @@ When changes are pushed to the Git repository:
 
 Secrets must be added in the Woodpecker **Web UI > Repositories > WatchTower > Secrets** section with the following names:
 
-| Secret Name     | Description                       |
+| Secret Name     | Description                        |
 |------------------|-----------------------------------|
 | `EMAIL_FROM`     | Watchtower sender email           |
 | `EMAIL_TO`       | Notification recipient            |
@@ -160,3 +161,31 @@ Secrets must be added in the Woodpecker **Web UI > Repositories > WatchTower > S
 | `EMAIL_PASS`     | SMTP password                     |
 
 They are injected automatically into the pipeline environment as secure variables.
+
+---
+
+## 🔐 Private Registry Authentication
+
+If you are using a **private Docker registry**, Watchtower must have access to the registry credentials in order to check for image updates.
+
+Since Docker and Watchtower typically run as `root`, you must log in to the registry as root:
+
+```bash
+sudo docker login registry.example.com
+````
+
+This stores the credentials in `/root/.docker/config.json`, which is mounted into the Watchtower container as:
+
+```yaml
+volumes:
+  - /root/.docker:/config:ro
+```
+
+and accessed via:
+
+```yaml
+environment:
+  - DOCKER_CONFIG=/config
+```
+
+> ⚠️ If you log in as a non-root user, Watchtower **will not** be able to access those credentials, and updates from your private registry will fail with a `no basic auth credentials` error.
