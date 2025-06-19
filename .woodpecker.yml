@@ -20,12 +20,18 @@ steps:
     volumes:
       - /tank:/tank
     environment:
-      EMAIL_FROM: from_secret
-      EMAIL_TO: from_secret
-      EMAIL_SERVER: from_secret
-      EMAIL_PORT: from_secret
-      EMAIL_USER: from_secret
-      EMAIL_PASS: from_secret
+      EMAIL_FROM:
+        from_secret: EMAIL_FROM
+      EMAIL_TO:
+        from_secret: EMAIL_TO
+      EMAIL_SERVER:
+        from_secret: EMAIL_SERVER
+      EMAIL_PORT:
+        from_secret: EMAIL_PORT
+      EMAIL_USER:
+        from_secret: EMAIL_USER
+      EMAIL_PASS:
+        from_secret: EMAIL_PASS
     commands:
       - |
         cd /tank/docker/compose/watchtower
@@ -56,7 +62,6 @@ steps:
         WATCHTOWER_POLL_INTERVAL=86400
         EOF
       - chmod 600 .env
-
 
   restart-compose:
     image: docker:cli
