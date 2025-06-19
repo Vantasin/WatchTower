@@ -30,7 +30,19 @@ steps:
     commands:
       - pip install jinja2-cli
       - cd /tank/docker/compose/watchtower
-      - jinja2 env.j2 -D watchtower_hostname="$WATCHTOWER_HOSTNAME" -D notifications="$WATCHTOWER_NOTIFICATIONS" -D email_from="$EMAIL_FROM" -D email_to="$EMAIL_TO" -D email_server="$EMAIL_SERVER" -D email_port="$EMAIL_PORT" -D email_user="$EMAIL_USER" -D email_pass="$EMAIL_PASS" -D cleanup="true" -D include_restarting="true" -D poll_interval="86400" > .env
+      - jinja2 env.j2 \
+          -D watchtower_hostname="$WATCHTOWER_HOSTNAME" \
+          -D notifications="$WATCHTOWER_NOTIFICATIONS" \
+          -D email_from="$EMAIL_FROM" \
+          -D email_to="$EMAIL_TO" \
+          -D email_server="$EMAIL_SERVER" \
+          -D email_port="$EMAIL_PORT" \
+          -D email_user="$EMAIL_USER" \
+          -D email_pass="$EMAIL_PASS" \
+          -D cleanup=true \
+          -D include_restarting=true \
+          -D poll_interval=86400 \
+          > .env
       - chmod 600 .env
 
   restart-compose:
