@@ -95,7 +95,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 # Hostname for the Watchtower container
 WATCHTOWER_HOSTNAME=Raspberry Pi 5 Server
 
-# Notification method: email | slack | shoutrrr | none
+# Notification method:
 WATCHTOWER_NOTIFICATIONS=email
 
 # Email notification settings
