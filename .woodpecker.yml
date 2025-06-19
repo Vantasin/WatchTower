@@ -1,6 +1,9 @@
+---
+name: Deploy Watchtower
+
 when:
-  - event: [push]
-    branch: [main]
+  event:
+    - push
 
 clone:
   git:
@@ -12,7 +15,7 @@ steps:
     image: alpine/git
     commands:
       - git config --global --add safe.directory /tank/docker/compose/watchtower
-      - git -C /tank/docker/compose/watchtower pull origin main
+      - git -C /tank/docker/compose/watchtower pull gitea main
 
   - name: render-env
     image: alpine
