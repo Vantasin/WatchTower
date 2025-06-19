@@ -15,40 +15,23 @@ steps:
       - git pull origin main
 
   render-env:
-    image: alpine
+    image: bitnami/minideb
     volumes:
       - /tank:/tank
     environment:
-      WATCHTOWER_HOSTNAME: raspberrypi
-      WATCHTOWER_NOTIFICATIONS: email
       EMAIL_FROM: from_secret
       EMAIL_TO: from_secret
       EMAIL_SERVER: from_secret
-      EMAIL_PORT: from_secret
+      EMAIL_SERVER_PORT: from_secret
       EMAIL_USER: from_secret
       EMAIL_PASS: from_secret
+      # you can also inject WATCHTOWER_CLEANUP, etc., here if you want them configurable via UI
     commands:
+      - apt-get update && apt-get install -y gettext-base
       - cd /tank/docker/compose/watchtower
-      - |
-        cat <<EOF > .env
-        # Watchtower settings
-        WATCHTOWER_HOSTNAME=${WATCHTOWER_HOSTNAME}
-        WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS}
-
-        # Email notification settings
-        WATCHTOWER_NOTIFICATION_EMAIL_FROM=${EMAIL_FROM}
-        WATCHTOWER_NOTIFICATION_EMAIL_TO=${EMAIL_TO}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${EMAIL_SERVER}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=${EMAIL_PORT}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${EMAIL_USER}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${EMAIL_PASS}
-
-        # Behavior
-        WATCHTOWER_CLEANUP=true
-        WATCHTOWER_INCLUDE_RESTARTING=true
-        WATCHTOWER_POLL_INTERVAL=86400
-        EOF
+      - envsubst < env.template > .env
       - chmod 600 .env
+
 
   restart-compose:
     image: docker:cli
