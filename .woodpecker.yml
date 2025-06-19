@@ -15,7 +15,7 @@ steps:
       - git -C /tank/docker/compose/watchtower pull origin main
 
   - name: render-env
-    image: alpine
+    image: alpine:latest
     volumes:
       - /tank:/tank
     environment:
@@ -34,41 +34,12 @@ steps:
       EMAIL_PASS:
         from_secret: EMAIL_PASS
     commands:
-      # start fresh
-      - rm -f /tank/docker/compose/watchtower/.env
-      - echo "# Watchtower settings" \
-          > /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_HOSTNAME=$WATCHTOWER_HOSTNAME" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_NOTIFICATIONS=$WATCHTOWER_NOTIFICATIONS" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "# Email settings" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_NOTIFICATION_EMAIL_FROM=$EMAIL_FROM" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_NOTIFICATION_EMAIL_TO=$EMAIL_TO" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_NOTIFICATION_EMAIL_SERVER=$EMAIL_SERVER" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=$EMAIL_PORT" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=$EMAIL_USER" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=$EMAIL_PASS" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "# Behavior" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_CLEANUP=true" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_INCLUDE_RESTARTING=true" \
-          >> /tank/docker/compose/watchtower/.env
-      - echo "WATCHTOWER_POLL_INTERVAL=86400" \
-          >> /tank/docker/compose/watchtower/.env
-      - chmod 600 /tank/docker/compose/watchtower/.env
+      # install envsubst
+      - apk add --no-cache gettext
+      # render env.j2 → .env in-place
+      - cd /tank/docker/compose/watchtower
+      - envsubst < env.j2 > .env
+      - chmod 600 .env
 
   - name: restart-compose
     image: docker:cli
