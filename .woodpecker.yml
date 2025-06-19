@@ -40,7 +40,18 @@ steps:
         from_secret: EMAIL_PASS
     commands:
       - |
-        cat <<EOF > /tank/docker/compose/watchtower/.env
+                #–– Debug: make sure secrets exist ––
+        if [ -z "$EMAIL_FROM" ]; then
+          echo "❌ EMAIL_FROM is empty"
+          exit 1
+        else
+          # show masked length instead of the secret itself
+          len=$(printf '%s' "$EMAIL_FROM" | wc -c)
+          echo "✅ EMAIL_FROM injected (length=$len)"
+        fi
+
+        #–– Now render your .env ––
+        cat > /tank/docker/compose/watchtower/.env <<EOF
         # Watchtower settings
         WATCHTOWER_HOSTNAME=${WATCHTOWER_HOSTNAME}
         WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS}
