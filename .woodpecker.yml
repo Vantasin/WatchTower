@@ -17,7 +17,7 @@ steps:
       - /tank:/tank
     commands:
       - git config --global --add safe.directory /tank/docker/compose/watchtower
-      - git -C /tank/docker/compose/watchtower pull gitea main
+      - git -C /tank/docker/compose/watchtower pull origin main
 
   - name: render-env
     image: alpine
