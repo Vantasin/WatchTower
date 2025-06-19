@@ -9,7 +9,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-      - ~/.docker:/config:ro
+      - /root/.docker:/config:ro #Login To Docker Registry as Root
     environment:
       - DOCKER_CONFIG=/config
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
