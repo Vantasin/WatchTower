@@ -5,11 +5,6 @@ when:
   event:
     - push
 
-clone:
-  git:
-    image: woodpeckerci/plugin-git
-    depth: 1
-
 steps:
   - name: git-pull
     image: alpine/git
@@ -18,32 +13,6 @@ steps:
     commands:
       - git config --global --add safe.directory /tank/docker/compose/watchtower
       - git -C /tank/docker/compose/watchtower pull origin main
-
-  - name: debug-secrets
-    image: alpine
-    environment:
-      EMAIL_FROM:
-        from_secret: EMAIL_FROM
-      EMAIL_TO:
-        from_secret: EMAIL_TO
-      EMAIL_SERVER:
-        from_secret: EMAIL_SERVER
-      EMAIL_PORT:
-        from_secret: EMAIL_PORT
-      EMAIL_USER:
-        from_secret: EMAIL_USER
-      EMAIL_PASS:
-        from_secret: EMAIL_PASS
-    commands:
-      # List all EMAIL_* vars
-      - echo "EMAIL_FROM   = ${EMAIL_FROM}"
-      - echo "EMAIL_TO     = ${EMAIL_TO}"
-      - echo "EMAIL_SERVER = ${EMAIL_SERVER}"
-      - echo "EMAIL_PORT   = ${EMAIL_PORT}"
-      - echo "EMAIL_USER   = ${EMAIL_USER}"
-      - echo "EMAIL_PASS   = ${EMAIL_PASS}"
-      # Or to see just the variable names and see that they're set (masked):
-      - env | grep EMAIL_
 
   - name: render-env
     image: alpine
@@ -75,10 +44,12 @@ steps:
       # Or to see just the variable names and see that they're set (masked):
       - env | grep EMAIL_
       - |
+        set -e
+        echo "DEBUG EMAIL_FROM=${EMAIL_FROM}"
         cat <<EOF > /tank/docker/compose/watchtower/.env
         # Watchtower settings
-        WATCHTOWER_HOSTNAME=${WATCHTOWER_HOSTNAME}
-        WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS}
+        WATCHTOWER_HOSTNAME=Raspberry Pi 5 Server
+        WATCHTOWER_NOTIFICATIONS=email
 
         # Email settings
         WATCHTOWER_NOTIFICATION_EMAIL_FROM=${EMAIL_FROM}
