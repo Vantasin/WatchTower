@@ -72,11 +72,9 @@ This repository contains the Docker Compose configuration for the **Watchtower**
    sudo cp env.example .env
    sudo nano .env
    sudo chmod 600 .env
-
-   # Optionally review or customize the CI/CD pipeline\.nano .woodpecker.yml
    ```
 
-   > Alternatively generate the `.env` file using the Jinja2 `env.j2` template and CLI or Ansible's `template` module.
+   > Alternatively generate the `.env` file using the `env.j2` template with Woodpecker CI's `.woodpecker.yml` or Ansible's `template` module.
 
 4. **Start Watchtower**
 
@@ -145,33 +143,12 @@ This project includes a `.woodpecker.yml` pipeline for automated deployment usin
 When changes are pushed to the Git repository:
 1. The pipeline is triggered by the Woodpecker server.
 2. Secrets are securely injected from the Woodpecker UI.
-3. The `.env` file is rendered from `env.j2` using `jinja2-cli`.
+3. The `.env` file is rendered from `env.j2` using `envsubst`.
 4. The Docker Compose stack is restarted to apply updates.
-
-### 🧩 Required Agent Configuration
-
-Make sure your `woodpecker-agent` is configured with the following volume mounts:
-
-```yaml
-volumes:
-  - /var/run/docker.sock:/var/run/docker.sock
-  - /tank/docker/compose:/compose
-```
-
-### 🔧 Workspace Setup
-
-The `.woodpecker.yml` uses this workspace configuration:
-
-```yaml
-workspace:
-  base: /compose/watchtower
-```
-
-This allows the pipeline to run inside the correct project directory.
 
 ### 🔐 Secret Injection
 
-Secrets must be added in the Woodpecker **Web UI > Repositories > Secrets** section with the following names:
+Secrets must be added in the Woodpecker **Web UI > Repositories > watchtower > Secrets** section with the following names:
 
 | Secret Name     | Description                       |
 |------------------|-----------------------------------|
