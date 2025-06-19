@@ -13,6 +13,8 @@ clone:
 steps:
   - name: git-pull
     image: alpine/git
+    volumes:
+      - /tank:/tank
     commands:
       - git config --global --add safe.directory /tank/docker/compose/watchtower
       - git -C /tank/docker/compose/watchtower pull gitea main
