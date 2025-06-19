@@ -120,28 +120,21 @@ These variables enable **automated container updates** with optional **email not
 
 ## 🧪 Useful Commands
 
-Stop containers for a local Compose project
+Stop containers for a local Compose project:
 ```bash
 docker compose down
 ```
 
-Lists containers for a local Compose project
+Lists containers for a local Compose project:
 ```bash
 docker compose ps
 ```
 
-Lists all running Docker containers
+Lists all running Docker containers:
 ```bash
 docker ps
 ```
 ---
-
-## 🧷 ZFS Snapshot (optional)
-
-```bash
-sudo zfs snapshot tank/docker/data/watchtower@$(date +%Y%m%d)
-sudo zfs rollback tank/docker/data/watchtower@<snapshot_name>
-```
 
 ## 🚀 Continuous Deployment with Woodpecker
 
