@@ -40,7 +40,7 @@ steps:
         from_secret: EMAIL_PASS
     commands:
       - |
-                #–– Debug: make sure secrets exist ––
+        #–– Debug: make sure secrets exist ––
         if [ -z "$EMAIL_FROM" ]; then
           echo "❌ EMAIL_FROM is empty"
           exit 1
@@ -51,7 +51,7 @@ steps:
         fi
 
         #–– Now render your .env ––
-        cat > /tank/docker/compose/watchtower/.env <<EOF
+        cat <<EOF > /tank/docker/compose/watchtower/.env
         # Watchtower settings
         WATCHTOWER_HOSTNAME=${WATCHTOWER_HOSTNAME}
         WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS}
