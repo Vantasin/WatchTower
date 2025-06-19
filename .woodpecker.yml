@@ -1,5 +1,8 @@
-# .woodpecker.yml
 name: Deploy Watchtower
+
+when:
+  event:
+    - push
 
 steps:
   git-pull:
@@ -12,7 +15,7 @@ steps:
   render-env:
     image: python:3.12
     environment:
-      WATCHTOWER_HOSTNAME: Raspberry Pi 5 Server
+      WATCHTOWER_HOSTNAME: raspberrypi
       WATCHTOWER_NOTIFICATIONS: email
       EMAIL_FROM: from_secret
       EMAIL_TO: from_secret
@@ -47,3 +50,4 @@ steps:
       - cd /tank/docker/compose/watchtower
       - docker compose down
       - docker compose up -d
+
