@@ -15,7 +15,9 @@ steps:
       - git pull origin main
 
   render-env:
-    image: python:3.12
+    image: bitnami/minideb
+    volumes:
+      - /tank:/tank
     environment:
       WATCHTOWER_HOSTNAME: raspberrypi
       WATCHTOWER_NOTIFICATIONS: email
@@ -25,25 +27,11 @@ steps:
       EMAIL_PORT: from_secret
       EMAIL_USER: from_secret
       EMAIL_PASS: from_secret
-    commands:
-      - pip install jinja2-cli
-      - cd /tank/docker/compose/watchtower
-      - |
-        echo '{
-          "watchtower_hostname": "'"$WATCHTOWER_HOSTNAME"'",
-          "notifications": "'"$WATCHTOWER_NOTIFICATIONS"'",
-          "email_from": "'"$EMAIL_FROM"'",
-          "email_to": "'"$EMAIL_TO"'",
-          "email_server": "'"$EMAIL_SERVER"'",
-          "email_port": "'"$EMAIL_PORT"'",
-          "email_user": "'"$EMAIL_USER"'",
-          "email_pass": "'"$EMAIL_PASS"'",
-          "cleanup": true,
-          "include_restarting": true,
-          "poll_interval": 86400
-        }' > context.json
-      - jinja2 env.j2 context.json > .env
-      - chmod 600 .env
+      commands:
+        - apt-get update && apt-get install -y gettext-base
+        - cd /tank/docker/compose/watchtower
+        - envsubst < env.template > .env
+        - chmod 600 .env
 
   restart-compose:
     image: docker:cli
