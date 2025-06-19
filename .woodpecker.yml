@@ -1,3 +1,4 @@
+---
 name: Deploy Watchtower
 
 when:
@@ -25,7 +26,6 @@ steps:
       EMAIL_SERVER_PORT: from_secret
       EMAIL_USER: from_secret
       EMAIL_PASS: from_secret
-      # you can also inject WATCHTOWER_CLEANUP, etc., here if you want them configurable via UI
     commands:
       - apt-get update && apt-get install -y gettext-base
       - cd /tank/docker/compose/watchtower
@@ -41,4 +41,3 @@ steps:
       - cd /tank/docker/compose/watchtower
       - docker compose down
       - docker compose up -d
-
