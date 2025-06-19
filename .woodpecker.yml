@@ -65,6 +65,15 @@ steps:
       EMAIL_PASS:
         from_secret: EMAIL_PASS
     commands:
+      # List all EMAIL_* vars
+      - echo "EMAIL_FROM   = ${EMAIL_FROM}"
+      - echo "EMAIL_TO     = ${EMAIL_TO}"
+      - echo "EMAIL_SERVER = ${EMAIL_SERVER}"
+      - echo "EMAIL_PORT   = ${EMAIL_PORT}"
+      - echo "EMAIL_USER   = ${EMAIL_USER}"
+      - echo "EMAIL_PASS   = ${EMAIL_PASS}"
+      # Or to see just the variable names and see that they're set (masked):
+      - env | grep EMAIL_
       - |
         cat <<EOF > /tank/docker/compose/watchtower/.env
         # Watchtower settings
