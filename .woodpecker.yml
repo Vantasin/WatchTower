@@ -19,7 +19,7 @@ steps:
     volumes:
       - /tank:/tank
     environment:
-      WATCHTOWER_HOSTNAME: raspberrypi
+      WATCHTOWER_HOSTNAME: Raspberry Pi 5 Server
       WATCHTOWER_NOTIFICATIONS: email
       EMAIL_FROM: from_secret
       EMAIL_TO: from_secret
