@@ -7,6 +7,8 @@ when:
 steps:
   git-pull:
     image: alpine/git
+    volumes:
+      - /tank:/tank
     commands:
       - cd /tank/docker/compose/watchtower
       - git config --global --add safe.directory /tank/docker/compose/watchtower
@@ -14,6 +16,8 @@ steps:
 
   render-env:
     image: python:3.12
+    volumes:
+      - /tank:/tank
     environment:
       WATCHTOWER_HOSTNAME: raspberrypi
       WATCHTOWER_NOTIFICATIONS: email
@@ -26,8 +30,7 @@ steps:
     commands:
       - pip install jinja2-cli
       - cd /tank/docker/compose/watchtower
-      - |
-        jinja2 env.j2 \
+      - jinja2 env.j2 \
           -D watchtower_hostname="$WATCHTOWER_HOSTNAME" \
           -D notifications="$WATCHTOWER_NOTIFICATIONS" \
           -D email_from="$EMAIL_FROM" \
@@ -46,6 +49,7 @@ steps:
     image: docker:cli
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /tank:/tank
     commands:
       - cd /tank/docker/compose/watchtower
       - docker compose down
