@@ -63,8 +63,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
    mkdir -p ~/docker/data/watchtower
    ```
 
-3. **Configure environment variables and CI pipeline**
-   See [Continuous Deployment with Woodpecker](#continuous-deployment-with-woodpecker)
+3. **Configure environment variables**
 
    Copy and modify the `.env` file:
 
@@ -148,7 +147,7 @@ When changes are pushed to the Git repository:
 
 ### 🔐 Secret Injection
 
-Secrets must be added in the Woodpecker **Web UI > Repositories > watchtower > Secrets** section with the following names:
+Secrets must be added in the Woodpecker **Web UI > Repositories > WatchTower > Secrets** section with the following names:
 
 | Secret Name     | Description                       |
 |------------------|-----------------------------------|
