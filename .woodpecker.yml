@@ -55,7 +55,7 @@ steps:
         WATCHTOWER_INCLUDE_RESTARTING=true
         WATCHTOWER_POLL_INTERVAL=86400
         EOF
-    - chmod 600 .env
+      - chmod 600 .env
 
 
   restart-compose:
