@@ -11,9 +11,10 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 ├── compose/
 │   └── watchtower/
 │       ├── docker-compose.yml      # Main Docker Compose config
-│       ├── .env                    # Runtime environment variables
+│       ├── .env                    # Runtime environment variables and secrets (gitignored!)
 │       ├── env.example             # Example .env file for reference
 │       ├── env.j2                  # Optional Jinja2 template
+│       ├── .woodpecker.yml         # CI/CD pipeline definition for auto-deploy
 │       └── readme.md               # This file
 ├── data/
 │   └── watchtower/                 # Reserved for persistence (optional)
@@ -62,7 +63,8 @@ This repository contains the Docker Compose configuration for the **Watchtower**
    mkdir -p ~/docker/data/watchtower
    ```
 
-3. **Configure environment variables**
+3. **Configure environment variables and CI pipeline**
+   See [Continuous Deployment with Woodpecker](#continuous-deployment-with-woodpecker)
 
    Copy and modify the `.env` file:
 
@@ -70,6 +72,8 @@ This repository contains the Docker Compose configuration for the **Watchtower**
    sudo cp env.example .env
    sudo nano .env
    sudo chmod 600 .env
+
+   # Optionally review or customize the CI/CD pipeline\.nano .woodpecker.yml
    ```
 
    > Alternatively generate the `.env` file using the Jinja2 `env.j2` template and CLI or Ansible's `template` module.
@@ -89,7 +93,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 
 ```dotenv
 # Hostname for the Watchtower container
-WATCHTOWER_HOSTNAME=raspberrypi
+WATCHTOWER_HOSTNAME=Raspberry Pi 5 Server
 
 # Notification method: email | slack | shoutrrr | none
 WATCHTOWER_NOTIFICATIONS=email
@@ -133,3 +137,49 @@ docker compose down
 sudo zfs snapshot tank/docker/data/watchtower@$(date +%Y%m%d)
 sudo zfs rollback tank/docker/data/watchtower@<snapshot_name>
 ```
+
+## 🚀 Continuous Deployment with Woodpecker
+
+This project includes a `.woodpecker.yml` pipeline for automated deployment using [Woodpecker CI](https://woodpecker-ci.org/).
+
+When changes are pushed to the Git repository:
+1. The pipeline is triggered by the Woodpecker server.
+2. Secrets are securely injected from the Woodpecker UI.
+3. The `.env` file is rendered from `env.j2` using `jinja2-cli`.
+4. The Docker Compose stack is restarted to apply updates.
+
+### 🧩 Required Agent Configuration
+
+Make sure your `woodpecker-agent` is configured with the following volume mounts:
+
+```yaml
+volumes:
+  - /var/run/docker.sock:/var/run/docker.sock
+  - /tank/docker/compose:/compose
+```
+
+### 🔧 Workspace Setup
+
+The `.woodpecker.yml` uses this workspace configuration:
+
+```yaml
+workspace:
+  base: /compose/watchtower
+```
+
+This allows the pipeline to run inside the correct project directory.
+
+### 🔐 Secret Injection
+
+Secrets must be added in the Woodpecker **Web UI > Repositories > Secrets** section with the following names:
+
+| Secret Name     | Description                       |
+|------------------|-----------------------------------|
+| `EMAIL_FROM`     | Watchtower sender email           |
+| `EMAIL_TO`       | Notification recipient            |
+| `EMAIL_SERVER`   | SMTP server hostname              |
+| `EMAIL_PORT`     | SMTP port (usually 587)           |
+| `EMAIL_USER`     | SMTP login username               |
+| `EMAIL_PASS`     | SMTP password                     |
+
+They are injected automatically into the pipeline environment as secure variables.

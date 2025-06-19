@@ -1,0 +1,49 @@
+# .woodpecker.yml
+name: Deploy Watchtower
+
+steps:
+  git-pull:
+    image: alpine/git
+    commands:
+      - cd /tank/docker/compose/watchtower
+      - git config --global --add safe.directory /tank/docker/compose/watchtower
+      - git pull origin main
+
+  render-env:
+    image: python:3.12
+    environment:
+      WATCHTOWER_HOSTNAME: Raspberry Pi 5 Server
+      WATCHTOWER_NOTIFICATIONS: email
+      EMAIL_FROM: from_secret
+      EMAIL_TO: from_secret
+      EMAIL_SERVER: from_secret
+      EMAIL_PORT: from_secret
+      EMAIL_USER: from_secret
+      EMAIL_PASS: from_secret
+    commands:
+      - pip install jinja2-cli
+      - cd /tank/docker/compose/watchtower
+      - |
+        jinja2 env.j2 \
+          -D watchtower_hostname="$WATCHTOWER_HOSTNAME" \
+          -D notifications="$WATCHTOWER_NOTIFICATIONS" \
+          -D email_from="$EMAIL_FROM" \
+          -D email_to="$EMAIL_TO" \
+          -D email_server="$EMAIL_SERVER" \
+          -D email_port="$EMAIL_PORT" \
+          -D email_user="$EMAIL_USER" \
+          -D email_pass="$EMAIL_PASS" \
+          -D cleanup=true \
+          -D include_restarting=true \
+          -D poll_interval=86400 \
+          > .env
+      - chmod 600 .env
+
+  restart-compose:
+    image: docker:cli
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - cd /tank/docker/compose/watchtower
+      - docker compose down
+      - docker compose up -d
