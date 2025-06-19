@@ -1,25 +1,26 @@
----
-name: Deploy Watchtower
-
 when:
-  event:
-    - push
+  - event: [push]
+    branch: [main]
+
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    depth: 1
 
 steps:
-  git-pull:
+  - name: git-pull
     image: alpine/git
-    volumes:
-      - /tank:/tank
     commands:
-      - cd /tank/docker/compose/watchtower
       - git config --global --add safe.directory /tank/docker/compose/watchtower
-      - git pull origin main
+      - git -C /tank/docker/compose/watchtower pull origin main
 
-  render-env:
+  - name: render-env
     image: alpine
     volumes:
       - /tank:/tank
     environment:
+      WATCHTOWER_HOSTNAME: raspberrypi
+      WATCHTOWER_NOTIFICATIONS: email
       EMAIL_FROM:
         from_secret: EMAIL_FROM
       EMAIL_TO:
@@ -34,36 +35,27 @@ steps:
         from_secret: EMAIL_PASS
     commands:
       - |
-        cd /tank/docker/compose/watchtower
-        export WATCHTOWER_HOSTNAME=${WATCHTOWER_HOSTNAME:-raspberrypi}
-        export WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS:-email}
-        export WATCHTOWER_NOTIFICATION_EMAIL_FROM="$EMAIL_FROM"
-        export WATCHTOWER_NOTIFICATION_EMAIL_TO="$EMAIL_TO"
-        export WATCHTOWER_NOTIFICATION_EMAIL_SERVER="$EMAIL_SERVER"
-        export WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT="$EMAIL_PORT"
-        export WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER="$EMAIL_USER"
-        export WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD="$EMAIL_PASS"
-        cat <<EOF > .env
+        cat <<EOF > /tank/docker/compose/watchtower/.env
         # Watchtower settings
         WATCHTOWER_HOSTNAME=${WATCHTOWER_HOSTNAME}
         WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS}
 
         # Email settings
-        WATCHTOWER_NOTIFICATION_EMAIL_FROM=${WATCHTOWER_NOTIFICATION_EMAIL_FROM}
-        WATCHTOWER_NOTIFICATION_EMAIL_TO=${WATCHTOWER_NOTIFICATION_EMAIL_TO}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER}
-        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD}
+        WATCHTOWER_NOTIFICATION_EMAIL_FROM=${EMAIL_FROM}
+        WATCHTOWER_NOTIFICATION_EMAIL_TO=${EMAIL_TO}
+        WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${EMAIL_SERVER}
+        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=${EMAIL_PORT}
+        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${EMAIL_USER}
+        WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${EMAIL_PASS}
 
         # Behavior
         WATCHTOWER_CLEANUP=true
         WATCHTOWER_INCLUDE_RESTARTING=true
         WATCHTOWER_POLL_INTERVAL=86400
         EOF
-      - chmod 600 .env
+      - chmod 600 /tank/docker/compose/watchtower/.env
 
-  restart-compose:
+  - name: restart-compose
     image: docker:cli
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
