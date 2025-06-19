@@ -37,14 +37,14 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 
 1. **Create the stack directory and clone the repository**
 
-   ### If using ZFS:
+   If using ZFS:
    ```bash
    sudo zfs create -p tank/docker/compose/watchtower
    cd /tank/docker/compose/watchtower
    sudo git clone https://github.com/Vantasin/watchtower.git .
    ```
 
-   ### If using standard directories:
+   If using standard directories:
    ```bash
    mkdir -p ~/docker/compose/watchtower
    cd ~/docker/compose/watchtower
@@ -53,12 +53,12 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 
 2. **Create the runtime data directory** (optional)
 
-   ### If using ZFS:
+   If using ZFS:
    ```bash
    sudo zfs create -p tank/docker/data/watchtower
    ```
 
-   ### If using standard directories:
+   If using standard directories:
    ```bash
    mkdir -p ~/docker/data/watchtower
    ```
