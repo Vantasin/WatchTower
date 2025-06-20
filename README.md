@@ -189,3 +189,13 @@ environment:
 ```
 
 > ⚠️ If you log in as a non-root user, Watchtower **will not** be able to access those credentials, and updates from your private registry will fail with a `no basic auth credentials` error.
+
+---
+
+## 🙏 Acknowledgements
+
+- [ChatGPT](https://openai.com/chatgpt) for assistance in generating setup scripts and templates.
+- [Docker](https://www.docker.com/) for container orchestration and runtime.
+- [Jinja2](https://palletsprojects.com/p/jinja/) for powerful and flexible templating used in configuration automation.
+- [Containrrr/Watchtower](https://containrrr.dev/watchtower/) for automated Docker container updates.
+- [Woodpecker CI](https://woodpecker-ci.org/) for lightweight, self-hosted continuous integration.
