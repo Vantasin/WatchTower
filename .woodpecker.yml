@@ -38,7 +38,7 @@ steps:
       - apk add --no-cache gettext
       # render env.j2 → .env in-place
       - cd /tank/docker/compose/watchtower
-      - envsubst < env.j2 > .env
+      - envsubst < env.template > .env
       - chmod 600 .env
 
   - name: restart-compose

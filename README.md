@@ -2,10 +2,10 @@
 
 [![MIT License](https://img.shields.io/github/license/Vantasin/WatchTower?style=flat-square)](LICENSE)
 [![Woodpecker CI](https://img.shields.io/badge/Woodpecker%20CI-self--hosted-green?logo=drone&style=flat-square)](https://woodpecker-ci.org/)
-[![Docker Pulls: containrrr/watchtower](https://img.shields.io/docker/pulls/containrrr/watchtower?style=flat-square&logo=docker)](https://hub.docker.com/r/containrrr/watchtower)
+[![Docker Pulls containrrr/watchtower](https://img.shields.io/docker/pulls/containrrr/watchtower?style=flat-square&logo=docker)](https://hub.docker.com/r/containrrr/watchtower)
 [![Docker Registry](https://img.shields.io/badge/Docker%20Registry-self--hosted-lightgrey?style=flat-square&logo=docker)](https://github.com/distribution/distribution)
-[![Jinja2](https://img.shields.io/badge/Jinja2-templating-orange?style=flat-square)](https://palletsprojects.com/p/jinja/)
 [![envsubst](https://img.shields.io/badge/envsubst-variable%20substitution-lightgrey?style=flat-square)](https://man7.org/linux/man-pages/man1/envsubst.1.html)
+[![ZFS](https://img.shields.io/badge/ZFS-OpenZFS-blue?style=flat-square)](https://openzfs.org/)
 
 This repository contains the Docker Compose configuration for the **Watchtower** service, which monitors and automatically updates running Docker containers with zero downtime. It supports rolling restarts and optional email notifications.
 
@@ -20,7 +20,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 │       ├── docker-compose.yml      # Main Docker Compose config
 │       ├── .env                    # Runtime environment variables and secrets (gitignored!)
 │       ├── env.example             # Example .env file for reference
-│       ├── env.j2                  # Optional Jinja2 template
+│       ├── env.template                  # Optional template
 │       ├── .woodpecker.yml         # CI/CD pipeline definition for auto-deploy
 │       └── readme.md               # This file
 ├── data/
@@ -80,7 +80,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
    sudo chmod 600 .env
    ```
 
-   > Alternatively generate the `.env` file using the `env.j2` template with Woodpecker CI's `.woodpecker.yml` or Ansible's `template` module.
+   > Alternatively generate the `.env` file using the `env.template` template with Woodpecker CI's `.woodpecker.yml`.
 
 4. **Start Watchtower**
 
@@ -151,7 +151,7 @@ This project includes a `.woodpecker.yml` pipeline for automated deployment usin
 When changes are pushed to the Git repository:
 1. The pipeline is triggered by the Woodpecker server.
 2. Secrets are securely injected from the Woodpecker UI.
-3. The `.env` file is rendered from `env.j2` using `envsubst`.
+3. The `.env` file is rendered from `env.template` using `envsubst`.
 4. The Docker Compose stack is restarted to apply updates.
 
 ### 🔐 Secret Injection
@@ -202,9 +202,10 @@ environment:
 ## 🙏 Acknowledgements
 
 - [ChatGPT](https://openai.com/chatgpt) for assistance in generating setup scripts and templates.
+- [Containrrr/Watchtower](https://containrrr.dev/watchtower/) for automated Docker container updates.
 - [Docker](https://www.docker.com/) for container orchestration and runtime.
 - [Docker Distribution](https://github.com/distribution/distribution) for enabling self-hosted Docker image registries.
 - [`envsubst`](https://man7.org/linux/man-pages/man1/envsubst.1.html) for lightweight environment variable substitution in template files.
-- [Jinja2](https://palletsprojects.com/p/jinja/) for powerful and flexible templating used in configuration automation.
-- [Containrrr/Watchtower](https://containrrr.dev/watchtower/) for automated Docker container updates.
 - [Woodpecker CI](https://woodpecker-ci.org/) for lightweight, self-hosted continuous integration.
+- [ZFS](https://openzfs.org/) for advanced local filesystem features, dataset organization, and snapshotting.
+
