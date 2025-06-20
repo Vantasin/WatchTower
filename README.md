@@ -1,8 +1,10 @@
 # 📦 Watchtower Docker Compose Stack
 
-[![MIT License](https://img.shields.io/github/license/Vantasin/watchtower-stack?style=flat-square)](LICENSE)
-[![Woodpecker CI](https://img.shields.io/badge/Woodpecker-CI-green?logo=drone)](https://woodpecker-ci.org/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/containrrr/watchtower)](https://hub.docker.com/r/containrrr/watchtower)
+[![MIT License](https://img.shields.io/github/license/Vantasin/WatchTower?style=flat-square)](LICENSE)
+[![Woodpecker CI](https://img.shields.io/badge/Woodpecker%20CI-self--hosted-green?logo=drone&style=flat-square)](https://woodpecker-ci.org/)
+[![Docker Pulls: containrrr/watchtower](https://img.shields.io/docker/pulls/containrrr/watchtower?style=flat-square&logo=docker)](https://hub.docker.com/r/containrrr/watchtower)
+[![Docker Registry](https://img.shields.io/badge/Docker%20Registry-self--hosted-lightgrey?style=flat-square&logo=docker)](https://github.com/distribution/distribution)
+[![Jinja2](https://img.shields.io/badge/Jinja2-templating-orange?style=flat-square)](https://palletsprojects.com/p/jinja/)
 
 This repository contains the Docker Compose configuration for the **Watchtower** service, which monitors and automatically updates running Docker containers with zero downtime. It supports rolling restarts and optional email notifications.
 
