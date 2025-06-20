@@ -1,5 +1,9 @@
 # 📦 Watchtower Docker Compose Stack
 
+[![MIT License](https://img.shields.io/github/license/Vantasin/watchtower-stack?style=flat-square)](LICENSE)
+[![Woodpecker CI](https://img.shields.io/badge/Woodpecker-CI-green?logo=drone)](https://woodpecker-ci.org/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/containrrr/watchtower)](https://hub.docker.com/r/containrrr/watchtower)
+
 This repository contains the Docker Compose configuration for the **Watchtower** service, which monitors and automatically updates running Docker containers with zero downtime. It supports rolling restarts and optional email notifications.
 
 ---
@@ -196,6 +200,7 @@ environment:
 
 - [ChatGPT](https://openai.com/chatgpt) for assistance in generating setup scripts and templates.
 - [Docker](https://www.docker.com/) for container orchestration and runtime.
+- [Docker Distribution](https://github.com/distribution/distribution) for enabling self-hosted Docker image registries.
 - [Jinja2](https://palletsprojects.com/p/jinja/) for powerful and flexible templating used in configuration automation.
 - [Containrrr/Watchtower](https://containrrr.dev/watchtower/) for automated Docker container updates.
 - [Woodpecker CI](https://woodpecker-ci.org/) for lightweight, self-hosted continuous integration.
