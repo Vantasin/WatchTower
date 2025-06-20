@@ -5,6 +5,7 @@
 [![Docker Pulls: containrrr/watchtower](https://img.shields.io/docker/pulls/containrrr/watchtower?style=flat-square&logo=docker)](https://hub.docker.com/r/containrrr/watchtower)
 [![Docker Registry](https://img.shields.io/badge/Docker%20Registry-self--hosted-lightgrey?style=flat-square&logo=docker)](https://github.com/distribution/distribution)
 [![Jinja2](https://img.shields.io/badge/Jinja2-templating-orange?style=flat-square)](https://palletsprojects.com/p/jinja/)
+[![envsubst](https://img.shields.io/badge/envsubst-variable%20substitution-lightgrey?style=flat-square)](https://man7.org/linux/man-pages/man1/envsubst.1.html)
 
 This repository contains the Docker Compose configuration for the **Watchtower** service, which monitors and automatically updates running Docker containers with zero downtime. It supports rolling restarts and optional email notifications.
 
@@ -203,6 +204,7 @@ environment:
 - [ChatGPT](https://openai.com/chatgpt) for assistance in generating setup scripts and templates.
 - [Docker](https://www.docker.com/) for container orchestration and runtime.
 - [Docker Distribution](https://github.com/distribution/distribution) for enabling self-hosted Docker image registries.
+- [`envsubst`](https://man7.org/linux/man-pages/man1/envsubst.1.html) for lightweight environment variable substitution in template files.
 - [Jinja2](https://palletsprojects.com/p/jinja/) for powerful and flexible templating used in configuration automation.
 - [Containrrr/Watchtower](https://containrrr.dev/watchtower/) for automated Docker container updates.
 - [Woodpecker CI](https://woodpecker-ci.org/) for lightweight, self-hosted continuous integration.
