@@ -20,7 +20,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 │       ├── docker-compose.yml      # Main Docker Compose config
 │       ├── .env                    # Runtime environment variables and secrets (gitignored!)
 │       ├── env.example             # Example .env file for reference
-│       ├── env.template                  # Optional template
+│       ├── env.template            # Optional template
 │       ├── .woodpecker.yml         # CI/CD pipeline definition for auto-deploy
 │       └── readme.md               # This file
 ├── data/
@@ -58,19 +58,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
    git clone https://github.com/Vantasin/watchtower.git .
    ```
 
-2. **Create the runtime data directory** (optional)
-
-   If using ZFS:
-   ```bash
-   sudo zfs create -p tank/docker/data/watchtower
-   ```
-
-   If using standard directories:
-   ```bash
-   mkdir -p ~/docker/data/watchtower
-   ```
-
-3. **Configure environment variables**
+2. **Configure environment variables**
 
    Copy and modify the `.env` file:
 
@@ -82,7 +70,7 @@ This repository contains the Docker Compose configuration for the **Watchtower**
 
    > Alternatively generate the `.env` file using the `env.template` template with Woodpecker CI's `.woodpecker.yml`.
 
-4. **Start Watchtower**
+3. **Start Watchtower**
 
    ```bash
    docker compose up -d
